@@ -488,6 +488,7 @@ rustls = { version = "0.23", default-features = false, features = ["logging", "r
 seahash = { version = "4.1.0", default-features = false }
 smallvec = { version = "1", default-features = false, features = ["union", "serde"] }
 snap = { version = "1.1.1", default-features = false }
+snmp2 = { version = "0.5.2", default-features = false, features = ["tokio", "crypto-rust", "heap_buffers"], optional = true }
 socket2.workspace = true
 sqlx = { version = "0.8.6", default-features = false, features = ["derive", "postgres", "chrono", "runtime-tokio", "tls-rustls-ring"], optional = true }
 stream-cancel = { version = "0.8.2", default-features = false }
@@ -764,6 +765,7 @@ sources-metrics = [
   "sources-nginx_metrics",
   "sources-postgresql_metrics",
   "sources-prometheus",
+  "sources-snmp",
   "sources-static_metrics",
   "sources-statsd",
   "sources-vector",
@@ -820,6 +822,7 @@ sources-prometheus_remote_write = ["sinks-prometheus", "sources-utils-http", "ve
 sources-prometheus_pushgateway = ["sinks-prometheus", "sources-utils-http", "vector-lib/prometheus"]
 sources-pulsar = ["dep:pulsar"]
 sources-redis = ["dep:redis"]
+sources-snmp = ["dep:snmp2", "dep:hex"]
 sources-socket = ["sources-utils-net", "tokio-util/net"]
 sources-splunk_hec = ["dep:roaring", "sources-utils-http-encoding"]
 sources-statsd = ["sources-utils-net", "tokio-util/net"]

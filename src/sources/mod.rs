@@ -80,6 +80,8 @@ pub mod prometheus;
 pub mod pulsar;
 #[cfg(feature = "sources-redis")]
 pub mod redis;
+#[cfg(feature = "sources-snmp")]
+pub mod snmp;
 #[cfg(feature = "sources-socket")]
 pub mod socket;
 #[cfg(feature = "sources-splunk_hec")]

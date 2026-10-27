@@ -130,6 +130,8 @@ mod remap;
 mod sample;
 #[cfg(feature = "sinks-sematext")]
 mod sematext_metrics;
+#[cfg(feature = "sources-snmp")]
+mod snmp;
 mod socket;
 #[cfg(any(feature = "sources-splunk_hec", feature = "sinks-splunk_hec"))]
 mod splunk_hec;
@@ -280,6 +282,8 @@ pub(crate) use self::remap::*;
 pub(crate) use self::sample::*;
 #[cfg(feature = "sinks-sematext")]
 pub(crate) use self::sematext_metrics::*;
+#[cfg(feature = "sources-snmp")]
+pub(crate) use self::snmp::*;
 #[cfg(any(feature = "sources-splunk_hec", feature = "sinks-splunk_hec"))]
 pub(crate) use self::splunk_hec::*;
 #[cfg(feature = "sinks-statsd")]
