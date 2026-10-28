@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  snmpsim:
+    build:
+      context: ../data
+      args:
+        SNMPSIM_VERSION: ${CONFIG_VERSION}
+
+networks:
+  default:
+    name: ${VECTOR_NETWORK}
+    external: true

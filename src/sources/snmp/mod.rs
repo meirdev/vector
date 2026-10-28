@@ -113,5 +113,7 @@ async fn collect(agent: &mut Agent, plan: &PollPlan) -> Vec<Metric> {
     metrics
 }
 
+#[cfg(all(test, feature = "snmp-integration-tests"))]
+mod integration_tests;
 #[cfg(test)]
 mod tests;
