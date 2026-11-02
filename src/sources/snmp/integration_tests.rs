@@ -45,6 +45,8 @@ fields:
     oid: 1.3.6.1.4.1.99999.4.0
     is_tag: true
     conversion: ipaddr
+  - name: max_counter
+    oid: 1.3.6.1.4.1.99999.5.0
   - name: missing
     oid: 1.3.6.1.4.1.99999.99.0
 tables:
@@ -187,6 +189,8 @@ fn assert_device(metrics: &[Metric]) {
 }
 
 fn assert_64_bit_counters(metrics: &[Metric]) {
+    // The largest Counter64 value has its top bit set, which needs a 9-byte encoding.
+    assert_counter(find(metrics, "max_counter", None), 2f64.powi(64));
     for (index, octets) in [
         ("1", 10_000_000_000.0),
         ("2", 20_000_000_000.0),
@@ -202,8 +206,8 @@ async fn collects_with_v2c() {
 
     assert_device(&metrics);
     assert_64_bit_counters(&metrics);
-    // 3 scalar metrics, 3 rows of 4 value columns, and `up`.
-    assert_eq!(metrics.len(), 16, "{metrics:#?}");
+    // 4 scalar metrics, 3 rows of 4 value columns, and `up`.
+    assert_eq!(metrics.len(), 17, "{metrics:#?}");
 }
 
 #[tokio::test]
@@ -212,11 +216,9 @@ async fn collects_with_v1() {
 
     assert_device(&metrics);
     // SNMPv1 has no 64-bit counter type, so the agent skips those values.
-    assert!(
-        metrics
-            .iter()
-            .all(|metric| metric.name() != "interface_hc_in_octets")
-    );
+    assert!(metrics.iter().all(|metric| {
+        metric.name() != "interface_hc_in_octets" && metric.name() != "max_counter"
+    }));
     assert_eq!(metrics.len(), 13, "{metrics:#?}");
 }
 
@@ -246,6 +248,17 @@ async fn collects_with_v3_auth_no_priv() {
 async fn collects_with_v3_auth_priv() {
     let metrics = collect(v3_config(&format!(
         "username: sha256aes\nsecurity_level: auth_priv\nauth_protocol: sha256\nauth_password: {AUTH_PASSWORD}\nprivacy_protocol: aes128\nprivacy_password: {PRIVACY_PASSWORD}"
+    )))
+    .await;
+
+    assert_device(&metrics);
+    assert_64_bit_counters(&metrics);
+}
+
+#[tokio::test]
+async fn collects_with_v3_des() {
+    let metrics = collect(v3_config(&format!(
+        "username: md5des\nsecurity_level: auth_priv\nauth_protocol: md5\nauth_password: {AUTH_PASSWORD}\nprivacy_protocol: des\nprivacy_password: {PRIVACY_PASSWORD}"
     )))
     .await;
 

@@ -11480,9 +11480,9 @@ checksum = "199905e6153d6405f9728fe44daace35f8f837bbf830bb6e85fbd5828709a886"
 
 [[package]]
 name = "snmp2"
-version = "0.5.2"
+version = "0.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ffacc454826c51e726b89d630b59fff892800184402beaa474574c2d9c3092ae"
+checksum = "b6fdb5fe8bca010de3e115b5bc079de1360bfd8257aae90c66979326eecee97a"
 dependencies = [
  "aes 0.8.3",
  "asn1-rs",

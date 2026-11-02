@@ -18,6 +18,8 @@ ENTRYPOINT ["snmpsim-command-responder", \
     "--agent-udpv4-endpoint=0.0.0.0:1161", \
     "--v3-user=noauth", \
     "--v3-user=authonly", "--v3-auth-key=authpass123", "--v3-auth-proto=SHA512", \
+    "--v3-user=md5des", "--v3-auth-key=authpass123", "--v3-auth-proto=MD5", \
+        "--v3-priv-key=privpass123", "--v3-priv-proto=DES", \
     "--v3-user=sha256aes", "--v3-auth-key=authpass123", "--v3-auth-proto=SHA256", \
         "--v3-priv-key=privpass123", "--v3-priv-proto=AES", \
     "--v3-user=aes256blmt", "--v3-auth-key=authpass123", "--v3-auth-proto=SHA", \
