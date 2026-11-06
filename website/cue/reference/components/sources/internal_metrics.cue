@@ -871,6 +871,58 @@ components: sources: internal_metrics: {
 			default_namespace: "vector"
 			tags:              _component_tags
 		}
+		netflow_exporter_last_seen_timestamp_seconds: {
+			description:       "The UNIX time, in seconds, of the last datagram the `netflow` source received from an exporter, whether it parsed or not."
+			type:              "gauge"
+			default_namespace: "vector"
+			tags: _component_tags & {
+				family:    _netflow_family
+				source_ip: _netflow_source_ip
+			}
+		}
+		netflow_flows_processed_total: {
+			description:       "The total number of flow records the `netflow` source decoded from an exporter. Options records are not counted."
+			type:              "counter"
+			default_namespace: "vector"
+			tags: _component_tags & {
+				protocol:  _netflow_protocol
+				source_ip: _netflow_source_ip
+			}
+		}
+		netflow_parse_errors_total: {
+			description:       "The total number of datagrams from an exporter that the `netflow` source could not parse."
+			type:              "counter"
+			default_namespace: "vector"
+			tags: _component_tags & {
+				protocol:  _netflow_protocol
+				source_ip: _netflow_source_ip
+			}
+		}
+		netflow_received_bytes_total: {
+			description:       "The total number of bytes of the datagrams the `netflow` source received from an exporter."
+			type:              "counter"
+			default_namespace: "vector"
+			tags: _component_tags & {
+				source_ip: _netflow_source_ip
+			}
+		}
+		netflow_received_packets_total: {
+			description:       "The total number of datagrams the `netflow` source received from an exporter, whether they parsed or not."
+			type:              "counter"
+			default_namespace: "vector"
+			tags: _component_tags & {
+				family:    _netflow_family
+				source_ip: _netflow_source_ip
+			}
+		}
+		netflow_unknown_version_packets_total: {
+			description:       "The total number of datagrams from an exporter whose protocol version is not of the family the `netflow` source listens for."
+			type:              "counter"
+			default_namespace: "vector"
+			tags: _component_tags & {
+				source_ip: _netflow_source_ip
+			}
+		}
 		open_connections: {
 			description:       "The number of current open connections to Vector."
 			type:              "gauge"
@@ -1340,6 +1392,29 @@ components: sources: internal_metrics: {
 				tcp:  "Transmission Control Protocol"
 				unix: "Unix domain socket"
 			}
+		}
+		_netflow_family: {
+			description: "The flow protocols the `netflow` source listens for."
+			required:    true
+			enum: {
+				netflow: "NetFlow v5, NetFlow v9, and IPFIX."
+				sflow:   "sFlow v5."
+			}
+		}
+		_netflow_protocol: {
+			description: "The flow protocol of the datagram."
+			required:    true
+			enum: {
+				netflow_v5: "NetFlow v5."
+				netflow_v9: "NetFlow v9."
+				ipfix:      "IPFIX."
+				sflow_v5:   "sFlow v5."
+			}
+		}
+		_netflow_source_ip: {
+			description: "The IP address of the exporter that sent the datagram."
+			required:    true
+			examples: ["192.0.2.1"]
 		}
 		_output: {
 			description: "The specific output of the component."

@@ -484,6 +484,7 @@ regex.workspace = true
 roaring = { version = "0.11.2", default-features = false, features = ["std"], optional = true }
 # Select MQTT's provider explicitly because VRL also enables Rustls's AWS-LC provider.
 rumqttc = { package = "rumqttc-v4-next", version = "0.34.0", default-features = false, features = ["use-rustls-ring"], optional = true }
+rustflow_core_new = { git = "https://github.com/meirdev/rustflow", branch = "big-refactor", default-features = false, optional = true }
 seahash = { version = "4.1.0", default-features = false }
 smallvec = { version = "1", default-features = false, features = ["union", "serde"] }
 snap = { version = "1.1.1", default-features = false }
@@ -742,6 +743,7 @@ sources-logs = [
   "sources-logstash",
   "sources-mqtt",
   "sources-nats",
+  "sources-netflow",
   "sources-okta",
   "sources-opentelemetry",
   "sources-pulsar",
@@ -802,6 +804,7 @@ sources-logstash = ["sources-utils-net-tcp", "tokio-util/net"]
 sources-mongodb_metrics = ["dep:mongodb"]
 sources-mqtt = ["dep:rumqttc"]
 sources-nats = ["dep:async-nats", "dep:nkeys"]
+sources-netflow = ["sources-utils-net-udp", "dep:rustflow_core_new"]
 sources-nginx_metrics = ["dep:nom"]
 sources-okta = ["sources-utils-http-client"]
 sources-opentelemetry = [
